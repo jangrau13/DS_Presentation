@@ -1,0 +1,33 @@
+# a context vector calculation in pratice
+
+# let's try to figure out the market value of newcomer _
+# given our scouting DB with current market values of known players
+
+v = {}
+v["messi"] = 80
+v["lewandowski"] = 40
+v["miller"] = -25
+
+# since we already have an example of cosine similarity g_ji is given here
+your_player = "ronald"
+
+g = {}
+g["yp-messi"] = 0.8
+g["yp-lewandowski"] = 0.5
+g["yp-miller"] = -0.8
+
+
+import math
+import numpy as np
+
+# a litte helper
+sum_eg = 0
+for mv in g:
+    sum_eg += math.exp(g[mv])
+
+# calculate attention values
+alpha_yp_messi = math.exp(g["yp-messi"])/sum_eg
+alpha_yp_lewandowski = math.exp(g["yp-lewandowski"])/sum_eg
+alpha_yp_maguire = math.exp(g["yp-miller"])/sum_eg
+c = alpha_yp_messi *v["messi"] + alpha_yp_lewandowski * v["lewandowski"] + alpha_yp_maguire * v["miller"]
+print("expected market value of ", your_player, ": ", round(c,2), "Mio CHF")
